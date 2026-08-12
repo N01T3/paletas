@@ -101,26 +101,6 @@ xychart-beta
 - **Daltonismo:** Todas as informações críticas são acompanhadas de **formas** (♥ coração, ⚡ raio, ★ estrela) e **texturas**.
 - **Contraste WCAG:** Todas as combinações de texto e UI possuem razão de contraste ≥ 4.5:1 (nível AA).
 
----
-
-## 📋 Exemplo de Uso – Shader de Transição
-
-```hlsl
-// Shader de substituição de paleta com interpolação
-Texture2D _PaletteA; // Paleta de origem
-Texture2D _PaletteB; // Paleta de destino
-float _Blend;        // Fator de interpolação (0-1)
-
-float4 frag(v2f i) : SV_Target {
-    float4 originalColor = tex2D(_MainTex, i.uv);
-    int index = FindClosestColorIndex(originalColor, _PaletteA);
-    float4 colorA = tex2D(_PaletteA, float2((index + 0.5)/32.0, 0.5));
-    float4 colorB = tex2D(_PaletteB, float2((index + 0.5)/32.0, 0.5));
-    return lerp(colorA, colorB, _Blend);
-}
-```
-
----
 
 ## 👥 Contribuição
 
@@ -152,4 +132,3 @@ Consulte o arquivo `LICENSE` para mais detalhes.
 
 **Última atualização:** 2026-08-12  
 **Versão do documento:** 2.0
-```
