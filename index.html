@@ -1,762 +1,670 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Paletas Steampunk – Referência Visual</title>
 
-    <!-- Mermaid.js CDN (para os diagramas) -->
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Mermaid.js (mantido para compatibilidade) -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
-    <style>
-        /* ===== RESET E BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0d1117;
-            color: #c9d1d9;
-            padding: 30px 20px;
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: #f0f6fc;
-            text-align: center;
-            margin-bottom: 4px;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #8b949e;
-            font-size: 1.1rem;
-            margin-bottom: 40px;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 20px;
-        }
-
-        /* ===== GRID DAS PALETAS ===== */
-        .palette-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 1000px) {
-            .palette-grid {
-                grid-template-columns: 1fr;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'github-bg': '#0d1117',
+                        'github-card': '#161b22',
+                        'github-border': '#30363d',
+                        'github-text': '#c9d1d9',
+                        'github-text-light': '#8b949e',
+                        'github-text-bright': '#f0f6fc',
+                    }
+                }
             }
         }
+    </script>
 
-        /* ===== CARD DA PALETA ===== */
+    <style>
+        /* ===== ANIMAÇÕES E MELHORIAS ===== */
+        .copy-toast {
+            animation: fadeInOut 1.2s ease forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .swatch-hover {
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            cursor: pointer;
+        }
+        .swatch-hover:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+        }
+
         .palette-card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 16px;
-            padding: 24px 28px 32px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
         .palette-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
         }
 
-        .palette-card .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            border-bottom: 2px solid #30363d;
-            padding-bottom: 10px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-            gap: 6px;
+        .badge-copy {
+            transition: opacity 0.2s;
+            opacity: 0.6;
         }
-        .palette-card .header h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #f0f6fc;
-        }
-        .palette-card .header .tag {
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: #1f2937;
-            padding: 4px 12px;
-            border-radius: 20px;
-            color: #8b949e;
-        }
-        .palette-card .header .tag.dark {
-            background: #2d1b1b;
-            color: #f08888;
-        }
-        .palette-card .header .tag.crepus {
-            background: #2d261b;
-            color: #c9ad5c;
-        }
-        .palette-card .header .tag.aurora {
-            background: #1b2d3d;
-            color: #8ab8d9;
-        }
-        .palette-card .header .tag.light {
-            background: #2d2a1b;
-            color: #e8d5a3;
-        }
-
-        .palette-card .desc {
-            font-size: 0.95rem;
-            color: #8b949e;
-            margin-bottom: 16px;
-        }
-
-        /* ===== UI EXEMPLO ===== */
-        .ui-example {
-            background: #0d1117;
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin: 14px 0 18px;
-            border: 1px solid #21262d;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 16px 30px;
-        }
-        .ui-example .hp,
-        .ui-example .sta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Consolas', monospace;
-            font-size: 0.9rem;
-        }
-        .ui-example .hp .bar-bg,
-        .ui-example .sta .bar-bg {
-            width: 100px;
-            height: 12px;
-            background: #0e1a2b;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .ui-example .hp .bar-fill,
-        .ui-example .sta .bar-fill {
-            height: 100%;
-            border-radius: 4px;
-        }
-
-        .ui-example .minimap {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Consolas', monospace;
-            font-size: 0.8rem;
-        }
-        .ui-example .minimap .map {
-            width: 48px;
-            height: 48px;
-            border: 1px solid #30363d;
-            border-radius: 4px;
-            padding: 4px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3px;
-            background: #0e1a2b;
-        }
-        .ui-example .minimap .map .room {
-            background: #2a2a2a;
-            border-radius: 2px;
-        }
-        .ui-example .minimap .map .player {
-            border-radius: 50%;
-            width: 6px;
-            height: 6px;
-            justify-self: center;
-            align-self: center;
-        }
-        .ui-example .minimap .map .enemy {
-            border-radius: 50%;
-            width: 6px;
-            height: 6px;
-            justify-self: center;
-            align-self: center;
-        }
-
-        /* ===== TABELA DE CORES ===== */
-        .color-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 12px 0 16px;
-            font-size: 0.82rem;
-        }
-        .color-table th {
-            text-align: left;
-            font-weight: 600;
-            color: #8b949e;
-            padding: 4px 6px;
-            border-bottom: 1px solid #21262d;
-        }
-        .color-table td {
-            padding: 6px 6px;
-            border-bottom: 1px solid #1c2128;
-            vertical-align: middle;
-        }
-        .color-table .swatch {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            border: 1px solid #30363d;
-            vertical-align: middle;
-            margin-right: 6px;
-        }
-        .color-table .hex {
-            font-family: 'Consolas', monospace;
-            font-size: 0.75rem;
-            color: #8b949e;
-        }
-        .color-table .label {
-            font-weight: 500;
-        }
-        .color-table .restriction {
-            font-size: 0.7rem;
-            color: #f08888;
-        }
-
-        /* ===== PERSONAGENS ===== */
-        .char-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid #21262d;
-        }
-        .char-item {
-            text-align: center;
-            padding: 8px 4px;
-            background: #0d1117;
-            border-radius: 8px;
-            border: 1px solid #21262d;
-        }
-        .char-item .char-name {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #8b949e;
-            margin-bottom: 4px;
-        }
-        .char-item .char-swatch {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-        .char-item .char-swatch span {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
-            border: 1px solid #30363d;
-        }
-
-        /* ===== REGRAS ===== */
-        .rules {
-            background: #0d1117;
-            border-radius: 8px;
-            padding: 12px 16px;
-            margin-top: 14px;
-            border-left: 3px solid #58a6ff;
-            font-size: 0.85rem;
-            color: #8b949e;
-        }
-        .rules strong {
-            color: #f0f6fc;
-        }
-
-        .badge-restrict {
-            display: inline-block;
-            background: #2d1b1b;
-            color: #f08888;
-            font-size: 0.65rem;
-            padding: 1px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #30363d;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #6e7681;
-        }
-
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            .palette-card {
-                padding: 16px;
-            }
-            .ui-example {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .ui-example .hp,
-            .ui-example .sta {
-                justify-content: space-between;
-            }
-            .ui-example .minimap {
-                justify-content: center;
-            }
-            .color-table {
-                font-size: 0.7rem;
-            }
-            .color-table .swatch {
-                width: 18px;
-                height: 18px;
-            }
+        .badge-copy:hover {
+            opacity: 1;
         }
     </style>
 </head>
-<body>
+<body class="bg-github-bg text-github-text font-sans antialiased py-8 px-4 md:py-12">
 
-    <div class="container">
-        <h1>🎨 Paletas Steampunk</h1>
-        <p class="subtitle">Referência visual completa – v3.0 · v3.5 · v3.6 · v4.1</p>
+    <!-- ===== TOAST DE CÓPIA ===== -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+        <div class="bg-[#1f2937] border border-[#58a6ff] text-github-text-bright px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+            <span>✅</span>
+            <span id="toastMessage" class="font-mono text-sm">#HEX copiado!</span>
+        </div>
+    </div>
 
-        <!-- ==================== GRID DE PALETAS ==================== -->
-        <div class="palette-grid">
+    <div class="max-w-7xl mx-auto">
 
-            <!-- ===== CARD 1: v3.0 – MASMORRA ESCURA ===== -->
-            <div class="palette-card">
-                <div class="header">
-                    <h2>🎨 v3.0 – Masmorra Escura</h2>
-                    <span class="tag dark">Opressiva · Combate</span>
+        <!-- ===== HEADER ===== -->
+        <header class="text-center mb-10 pb-6 border-b border-github-border">
+            <h1 class="text-4xl md:text-5xl font-bold text-github-text-bright tracking-tight">
+                🎨 Paletas Steampunk
+            </h1>
+            <p class="text-github-text-light text-lg mt-1">
+                Referência visual completa – v3.0 · v3.5 · v3.6 · v4.1
+            </p>
+            <p class="text-github-text-light text-sm mt-2 opacity-70">
+                💡 Clique em qualquer cor para copiar o HEX
+            </p>
+        </header>
+
+        <!-- ===== GRID DE PALETAS ===== -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- ============================================================ -->
+            <!-- CARD 1: v3.0 – MASMORRA ESCURA -->
+            <!-- ============================================================ -->
+            <div class="palette-card bg-github-card border border-github-border rounded-2xl p-6 shadow-lg">
+
+                <div class="flex flex-wrap items-baseline justify-between border-b border-github-border pb-3 mb-4">
+                    <h2 class="text-2xl font-bold text-github-text-bright">🎨 v3.0 – Masmorra Escura</h2>
+                    <span class="text-xs font-semibold bg-[#2d1b1b] text-[#f08888] px-3 py-1 rounded-full">Opressiva · Combate</span>
                 </div>
-                <div class="desc">Versão inicial. Escura, contrastada, steampunk pesado. Ideal para masmorras profundas e salas de boss.</div>
+                <p class="text-github-text-light text-sm mb-4">Versão inicial. Escura, contrastada, steampunk pesado. Ideal para masmorras profundas e salas de boss.</p>
 
                 <!-- UI Exemplo -->
-                <div class="ui-example">
-                    <div class="hp">
+                <div class="bg-github-bg rounded-lg border border-[#21262d] p-3 mb-4 flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>❤️ HP</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:100%; background:#C0392B;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-full bg-[#C0392B] rounded"></div>
+                        </div>
                         <span>120/120</span>
                     </div>
-                    <div class="sta">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>⚡ STA</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:75%; background:#2980B9;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-[75%] bg-[#2980B9] rounded"></div>
+                        </div>
                         <span>75/100</span>
                     </div>
-                    <div class="minimap">
+                    <div class="flex items-center gap-2 font-mono text-xs">
                         <span>🗺️</span>
-                        <div class="map">
-                            <div class="room" style="background:#B8942F;"></div>
-                            <div class="room" style="background:#B8942F;"></div>
-                            <div class="room" style="background:#B8942F;"></div>
-                            <div class="room" style="background:#B8942F;"></div>
-                            <div class="player" style="background:#00D4FF;"></div>
-                            <div class="enemy" style="background:#C0392B;"></div>
+                        <div class="w-12 h-12 border border-github-border rounded grid grid-cols-2 gap-1 p-1 bg-[#0e1a2b]">
+                            <div class="bg-[#B8942F] rounded"></div>
+                            <div class="bg-[#B8942F] rounded"></div>
+                            <div class="bg-[#B8942F] rounded"></div>
+                            <div class="bg-[#B8942F] rounded"></div>
+                            <div class="w-1.5 h-1.5 bg-[#00D4FF] rounded-full justify-self-center self-center"></div>
+                            <div class="w-1.5 h-1.5 bg-[#C0392B] rounded-full justify-self-center self-center"></div>
                         </div>
                         <span>MINIMAP</span>
                     </div>
                 </div>
 
-                <!-- Tabela de cores -->
-                <table class="color-table">
-                    <tr><th colspan="2">1. Latão (Calor, Máquinas)</th></tr>
-                    <tr><td><span class="swatch" style="background:#7A5C1E;"></span> Sombra</td><td class="hex">#7A5C1E</td></tr>
-                    <tr><td><span class="swatch" style="background:#B8942F;"></span> <strong>Base</strong></td><td class="hex">#B8942F</td></tr>
-                    <tr><td><span class="swatch" style="background:#E8C86A;"></span> Destaque</td><td class="hex">#E8C86A</td></tr>
-                    <tr><td><span class="swatch" style="background:#FFF2B0;"></span> Brilho</td><td class="hex">#FFF2B0</td></tr>
+                <!-- Tabela de cores com cópia -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="text-github-text-light border-b border-[#21262d]">
+                                <th class="text-left font-semibold py-1 px-1.5" colspan="2">1. Latão (Calor, Máquinas)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-github-text">
+                            <tr class="border-b border-[#1c2128] group">
+                                <td class="py-1.5 px-1.5 flex items-center gap-2">
+                                    <span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#7A5C1E;" data-hex="#7A5C1E" onclick="copyHex(this)"></span>
+                                    Sombra
+                                </td>
+                                <td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2">
+                                    <span>#7A5C1E</span>
+                                    <button onclick="copyHexFromText('#7A5C1E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-[#1c2128] group">
+                                <td class="py-1.5 px-1.5 flex items-center gap-2">
+                                    <span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B8942F;" data-hex="#B8942F" onclick="copyHex(this)"></span>
+                                    <strong>Base</strong>
+                                </td>
+                                <td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2">
+                                    <span>#B8942F</span>
+                                    <button onclick="copyHexFromText('#B8942F')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-[#1c2128] group">
+                                <td class="py-1.5 px-1.5 flex items-center gap-2">
+                                    <span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#E8C86A;" data-hex="#E8C86A" onclick="copyHex(this)"></span>
+                                    Destaque
+                                </td>
+                                <td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2">
+                                    <span>#E8C86A</span>
+                                    <button onclick="copyHexFromText('#E8C86A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-[#1c2128] group">
+                                <td class="py-1.5 px-1.5 flex items-center gap-2">
+                                    <span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#FFF2B0;" data-hex="#FFF2B0" onclick="copyHex(this)"></span>
+                                    Brilho
+                                </td>
+                                <td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2">
+                                    <span>#FFF2B0</span>
+                                    <button onclick="copyHexFromText('#FFF2B0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button>
+                                </td>
+                            </tr>
 
-                    <tr><th colspan="2">2. Cobre (Tubos, Vapor)</th></tr>
-                    <tr><td><span class="swatch" style="background:#6E3F1F;"></span> Sombra</td><td class="hex">#6E3F1F</td></tr>
-                    <tr><td><span class="swatch" style="background:#A86B3A;"></span> <strong>Base</strong></td><td class="hex">#A86B3A</td></tr>
-                    <tr><td><span class="swatch" style="background:#D99A6B;"></span> Destaque</td><td class="hex">#D99A6B</td></tr>
-                    <tr><td><span class="swatch" style="background:#F5C8A4;"></span> Brilho</td><td class="hex">#F5C8A4</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">2. Cobre (Tubos, Vapor)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6E3F1F;" data-hex="#6E3F1F" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6E3F1F</span><button onclick="copyHexFromText('#6E3F1F')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A86B3A;" data-hex="#A86B3A" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A86B3A</span><button onclick="copyHexFromText('#A86B3A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D99A6B;" data-hex="#D99A6B" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D99A6B</span><button onclick="copyHexFromText('#D99A6B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F5C8A4;" data-hex="#F5C8A4" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F5C8A4</span><button onclick="copyHexFromText('#F5C8A4')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">3. Azul-Marinho (Mistério)</th></tr>
-                    <tr><td><span class="swatch" style="background:#0E1A2B;"></span> Sombra</td><td class="hex">#0E1A2B</td></tr>
-                    <tr><td><span class="swatch" style="background:#1A2D4A;"></span> <strong>Base</strong></td><td class="hex">#1A2D4A</td></tr>
-                    <tr><td><span class="swatch" style="background:#2E4F73;"></span> Médio</td><td class="hex">#2E4F73</td></tr>
-                    <tr><td><span class="swatch" style="background:#4A7AAD;"></span> Destaque</td><td class="hex">#4A7AAD</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">3. Azul-Marinho (Mistério)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#0E1A2B;" data-hex="#0E1A2B" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#0E1A2B</span><button onclick="copyHexFromText('#0E1A2B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#1A2D4A;" data-hex="#1A2D4A" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#1A2D4A</span><button onclick="copyHexFromText('#1A2D4A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#2E4F73;" data-hex="#2E4F73" onclick="copyHex(this)"></span>Médio</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#2E4F73</span><button onclick="copyHexFromText('#2E4F73')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4A7AAD;" data-hex="#4A7AAD" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4A7AAD</span><button onclick="copyHexFromText('#4A7AAD')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">4. Cinza-Ferro (Estruturas)</th></tr>
-                    <tr><td><span class="swatch" style="background:#2A2A2A;"></span> Sombra</td><td class="hex">#2A2A2A</td></tr>
-                    <tr><td><span class="swatch" style="background:#4F4F4F;"></span> <strong>Base</strong></td><td class="hex">#4F4F4F</td></tr>
-                    <tr><td><span class="swatch" style="background:#6B6B6B;"></span> Transição</td><td class="hex">#6B6B6B</td></tr>
-                    <tr><td><span class="swatch" style="background:#7A7A7A;"></span> Destaque</td><td class="hex">#7A7A7A</td></tr>
-                    <tr><td><span class="swatch" style="background:#B0B0B0;"></span> Brilho</td><td class="hex">#B0B0B0</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">4. Cinza-Ferro (Estruturas)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#2A2A2A;" data-hex="#2A2A2A" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#2A2A2A</span><button onclick="copyHexFromText('#2A2A2A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4F4F4F;" data-hex="#4F4F4F" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4F4F4F</span><button onclick="copyHexFromText('#4F4F4F')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6B6B6B;" data-hex="#6B6B6B" onclick="copyHex(this)"></span>Transição</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6B6B6B</span><button onclick="copyHexFromText('#6B6B6B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#7A7A7A;" data-hex="#7A7A7A" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#7A7A7A</span><button onclick="copyHexFromText('#7A7A7A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B0B0B0;" data-hex="#B0B0B0" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B0B0B0</span><button onclick="copyHexFromText('#B0B0B0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">5. Marrom-Couro (Orgânico)</th></tr>
-                    <tr><td><span class="swatch" style="background:#3D2B1E;"></span> Sombra</td><td class="hex">#3D2B1E</td></tr>
-                    <tr><td><span class="swatch" style="background:#6B4F3A;"></span> <strong>Base</strong></td><td class="hex">#6B4F3A</td></tr>
-                    <tr><td><span class="swatch" style="background:#9B7B5A;"></span> Destaque</td><td class="hex">#9B7B5A</td></tr>
-                    <tr><td><span class="swatch" style="background:#C2A684;"></span> Areia</td><td class="hex">#C2A684</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">5. Marrom-Couro (Orgânico)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#3D2B1E;" data-hex="#3D2B1E" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#3D2B1E</span><button onclick="copyHexFromText('#3D2B1E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6B4F3A;" data-hex="#6B4F3A" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6B4F3A</span><button onclick="copyHexFromText('#6B4F3A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9B7B5A;" data-hex="#9B7B5A" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9B7B5A</span><button onclick="copyHexFromText('#9B7B5A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C2A684;" data-hex="#C2A684" onclick="copyHex(this)"></span>Areia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C2A684</span><button onclick="copyHexFromText('#C2A684')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">6. Destaques (UI / Raridades)</th></tr>
-                    <tr><td><span class="swatch" style="background:#C0392B;"></span> Perigo</td><td class="hex">#C0392B</td></tr>
-                    <tr><td><span class="swatch" style="background:#27AE60;"></span> Cura</td><td class="hex">#27AE60</td></tr>
-                    <tr><td><span class="swatch" style="background:#2980B9;"></span> Energia</td><td class="hex">#2980B9</td></tr>
-                    <tr><td><span class="swatch" style="background:#F1C40F;"></span> Interação</td><td class="hex">#F1C40F</td></tr>
-                    <tr><td><span class="swatch" style="background:#8E44AD;"></span> Épico</td><td class="hex">#8E44AD</td></tr>
-                    <tr><td><span class="swatch" style="background:#E67E22;"></span> Lendário</td><td class="hex">#E67E22</td></tr>
-                    <tr><td><span class="swatch" style="background:#A3E4D7;"></span> Anomalia</td><td class="hex">#A3E4D7</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">6. Destaques (UI / Raridades)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C0392B;" data-hex="#C0392B" onclick="copyHex(this)"></span>Perigo</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C0392B</span><button onclick="copyHexFromText('#C0392B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#27AE60;" data-hex="#27AE60" onclick="copyHex(this)"></span>Cura</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#27AE60</span><button onclick="copyHexFromText('#27AE60')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#2980B9;" data-hex="#2980B9" onclick="copyHex(this)"></span>Energia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#2980B9</span><button onclick="copyHexFromText('#2980B9')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F1C40F;" data-hex="#F1C40F" onclick="copyHex(this)"></span>Interação</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F1C40F</span><button onclick="copyHexFromText('#F1C40F')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#8E44AD;" data-hex="#8E44AD" onclick="copyHex(this)"></span>Épico</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#8E44AD</span><button onclick="copyHexFromText('#8E44AD')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#E67E22;" data-hex="#E67E22" onclick="copyHex(this)"></span>Lendário</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#E67E22</span><button onclick="copyHexFromText('#E67E22')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A3E4D7;" data-hex="#A3E4D7" onclick="copyHex(this)"></span>Anomalia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A3E4D7</span><button onclick="copyHexFromText('#A3E4D7')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">7. Cores Restritas</th></tr>
-                    <tr><td><span class="swatch" style="background:#5E1A2B;"></span> Vinho Velho <span class="badge-restrict">⚠️ só em fundos claros</span></td><td class="hex">#5E1A2B</td></tr>
-                    <tr><td><span class="swatch" style="background:#00D4FF;"></span> Neon Ciano <span class="badge-restrict">⚠️ só detalhes pequenos</span></td><td class="hex">#00D4FF</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">7. Cores Restritas</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#5E1A2B;" data-hex="#5E1A2B" onclick="copyHex(this)"></span>Vinho Velho <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ só em fundos claros</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#5E1A2B</span><button onclick="copyHexFromText('#5E1A2B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#00D4FF;" data-hex="#00D4FF" onclick="copyHex(this)"></span>Neon Ciano <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ só detalhes pequenos</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#00D4FF</span><button onclick="copyHexFromText('#00D4FF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">8. Neutros</th></tr>
-                    <tr><td><span class="swatch" style="background:#000000;"></span> Preto</td><td class="hex">#000000</td></tr>
-                    <tr><td><span class="swatch" style="background:#F9F9F9;"></span> Branco</td><td class="hex">#F9F9F9</td></tr>
-                </table>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">8. Neutros</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#000000;" data-hex="#000000" onclick="copyHex(this)"></span>Preto</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#000000</span><button onclick="copyHexFromText('#000000')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F9F9F9;" data-hex="#F9F9F9" onclick="copyHex(this)"></span>Branco</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F9F9F9</span><button onclick="copyHexFromText('#F9F9F9')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Personagens -->
-                <div class="char-section">
-                    <div class="char-item"><div class="char-name">HERÓI</div><div class="char-swatch"><span style="background:#1A2D4A;"></span><span style="background:#FFF2B0;"></span><span style="background:#00D4FF;"></span></div></div>
-                    <div class="char-item"><div class="char-name">NPC</div><div class="char-swatch"><span style="background:#6B4F3A;"></span><span style="background:#7A7A7A;"></span><span style="background:#F1C40F;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO COMUM</div><div class="char-swatch"><span style="background:#2A2A2A;"></span><span style="background:#6E3F1F;"></span><span style="background:#C0392B;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO ELITE</div><div class="char-swatch"><span style="background:#5E1A2B;"></span><span style="background:#4F4F4F;"></span><span style="background:#E67E22;"></span></div></div>
-                    <div class="char-item"><div class="char-name">BOSS</div><div class="char-swatch"><span style="background:#000000;"></span><span style="background:#8E44AD;"></span><span style="background:#A3E4D7;"></span></div></div>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4 pt-4 border-t border-[#21262d]">
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2">
+                        <div class="text-[0.7rem] font-semibold text-github-text-light mb-1">HERÓI</div>
+                        <div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#1A2D4A;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#FFF2B0;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#00D4FF;"></span></div>
+                    </div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2">
+                        <div class="text-[0.7rem] font-semibold text-github-text-light mb-1">NPC</div>
+                        <div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#6B4F3A;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#7A7A7A;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F1C40F;"></span></div>
+                    </div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2">
+                        <div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO COMUM</div>
+                        <div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#2A2A2A;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#6E3F1F;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#C0392B;"></span></div>
+                    </div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2">
+                        <div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO ELITE</div>
+                        <div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#5E1A2B;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#4F4F4F;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#E67E22;"></span></div>
+                    </div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2">
+                        <div class="text-[0.7rem] font-semibold text-github-text-light mb-1">BOSS</div>
+                        <div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#000000;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#8E44AD;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#A3E4D7;"></span></div>
+                    </div>
                 </div>
 
-                <div class="rules">
-                    <strong>⭐ Como usar:</strong> Contraste = Legibilidade. Bordas claras no herói (#FFF2B0). Vinho Velho só em fundos claros. Neon Ciano só em detalhes pequenos.
+                <div class="bg-github-bg rounded-lg p-3 mt-4 border-l-4 border-[#58a6ff] text-github-text-light text-sm">
+                    <strong class="text-github-text-bright">⭐ Como usar:</strong> Contraste = Legibilidade. Bordas claras no herói (#FFF2B0). Vinho Velho só em fundos claros. Neon Ciano só em detalhes pequenos.
                 </div>
             </div>
 
-            <!-- ===== CARD 2: v3.5 – CREPÚSCULO ===== -->
-            <div class="palette-card">
-                <div class="header">
-                    <h2>🌆 v3.5 – Crepúsculo Steampunk</h2>
-                    <span class="tag crepus">Intermediária · Transição</span>
-                </div>
-                <div class="desc">Meio-termo entre dia e noite. Bronze envelhecido, iluminação moderada. Ideal para corredores e áreas de transição.</div>
+            <!-- ============================================================ -->
+            <!-- CARD 2: v3.5 – CREPÚSCULO -->
+            <!-- ============================================================ -->
+            <div class="palette-card bg-github-card border border-github-border rounded-2xl p-6 shadow-lg">
 
-                <div class="ui-example">
-                    <div class="hp">
+                <div class="flex flex-wrap items-baseline justify-between border-b border-github-border pb-3 mb-4">
+                    <h2 class="text-2xl font-bold text-github-text-bright">🌆 v3.5 – Crepúsculo Steampunk</h2>
+                    <span class="text-xs font-semibold bg-[#2d261b] text-[#c9ad5c] px-3 py-1 rounded-full">Intermediária · Transição</span>
+                </div>
+                <p class="text-github-text-light text-sm mb-4">Meio-termo entre dia e noite. Bronze envelhecido, iluminação moderada. Ideal para corredores e áreas de transição.</p>
+
+                <div class="bg-github-bg rounded-lg border border-[#21262d] p-3 mb-4 flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>❤️ HP</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:100%; background:#CC4C3D;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-full bg-[#CC4C3D] rounded"></div>
+                        </div>
                         <span>120/120</span>
                     </div>
-                    <div class="sta">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>⚡ STA</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:75%; background:#39A3C0;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-[75%] bg-[#39A3C0] rounded"></div>
+                        </div>
                         <span>75/100</span>
                     </div>
-                    <div class="minimap">
+                    <div class="flex items-center gap-2 font-mono text-xs">
                         <span>🗺️</span>
-                        <div class="map">
-                            <div class="room" style="background:#C9AD5C;"></div>
-                            <div class="room" style="background:#C9AD5C;"></div>
-                            <div class="room" style="background:#C9AD5C;"></div>
-                            <div class="room" style="background:#C9AD5C;"></div>
-                            <div class="player" style="background:#26D0FF;"></div>
-                            <div class="enemy" style="background:#CC4C3D;"></div>
+                        <div class="w-12 h-12 border border-github-border rounded grid grid-cols-2 gap-1 p-1 bg-[#0e1a2b]">
+                            <div class="bg-[#C9AD5C] rounded"></div>
+                            <div class="bg-[#C9AD5C] rounded"></div>
+                            <div class="bg-[#C9AD5C] rounded"></div>
+                            <div class="bg-[#C9AD5C] rounded"></div>
+                            <div class="w-1.5 h-1.5 bg-[#26D0FF] rounded-full justify-self-center self-center"></div>
+                            <div class="w-1.5 h-1.5 bg-[#CC4C3D] rounded-full justify-self-center self-center"></div>
                         </div>
                         <span>MINIMAP</span>
                     </div>
                 </div>
 
-                <table class="color-table">
-                    <tr><th colspan="2">1. Latão (Bronze Envelhecido)</th></tr>
-                    <tr><td><span class="swatch" style="background:#9B7A40;"></span> Sombra</td><td class="hex">#9B7A40</td></tr>
-                    <tr><td><span class="swatch" style="background:#C9AD5C;"></span> <strong>Base</strong></td><td class="hex">#C9AD5C</td></tr>
-                    <tr><td><span class="swatch" style="background:#E4CD8E;"></span> Destaque</td><td class="hex">#E4CD8E</td></tr>
-                    <tr><td><span class="swatch" style="background:#F3EAC4;"></span> Brilho</td><td class="hex">#F3EAC4</td></tr>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="text-github-text-light border-b border-[#21262d]"><th class="text-left font-semibold py-1 px-1.5" colspan="2">1. Latão (Bronze Envelhecido)</th></tr>
+                        </thead>
+                        <tbody class="text-github-text">
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9B7A40;" data-hex="#9B7A40" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9B7A40</span><button onclick="copyHexFromText('#9B7A40')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C9AD5C;" data-hex="#C9AD5C" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C9AD5C</span><button onclick="copyHexFromText('#C9AD5C')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#E4CD8E;" data-hex="#E4CD8E" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#E4CD8E</span><button onclick="copyHexFromText('#E4CD8E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F3EAC4;" data-hex="#F3EAC4" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F3EAC4</span><button onclick="copyHexFromText('#F3EAC4')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">2. Cobre (Cobre Oxidado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#925F46;"></span> Sombra</td><td class="hex">#925F46</td></tr>
-                    <tr><td><span class="swatch" style="background:#B8845E;"></span> <strong>Base</strong></td><td class="hex">#B8845E</td></tr>
-                    <tr><td><span class="swatch" style="background:#D6B49C;"></span> Destaque</td><td class="hex">#D6B49C</td></tr>
-                    <tr><td><span class="swatch" style="background:#E8D2C0;"></span> Brilho</td><td class="hex">#E8D2C0</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">2. Cobre (Cobre Oxidado)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#925F46;" data-hex="#925F46" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#925F46</span><button onclick="copyHexFromText('#925F46')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B8845E;" data-hex="#B8845E" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B8845E</span><button onclick="copyHexFromText('#B8845E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D6B49C;" data-hex="#D6B49C" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D6B49C</span><button onclick="copyHexFromText('#D6B49C')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#E8D2C0;" data-hex="#E8D2C0" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#E8D2C0</span><button onclick="copyHexFromText('#E8D2C0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">3. Azul (Céu Anoitecido)</th></tr>
-                    <tr><td><span class="swatch" style="background:#2A405E;"></span> Sombra</td><td class="hex">#2A405E</td></tr>
-                    <tr><td><span class="swatch" style="background:#445E7C;"></span> <strong>Base</strong></td><td class="hex">#445E7C</td></tr>
-                    <tr><td><span class="swatch" style="background:#6C86A2;"></span> Médio</td><td class="hex">#6C86A2</td></tr>
-                    <tr><td><span class="swatch" style="background:#9AB4CE;"></span> Destaque</td><td class="hex">#9AB4CE</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">3. Azul (Céu Anoitecido)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#2A405E;" data-hex="#2A405E" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#2A405E</span><button onclick="copyHexFromText('#2A405E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#445E7C;" data-hex="#445E7C" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#445E7C</span><button onclick="copyHexFromText('#445E7C')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6C86A2;" data-hex="#6C86A2" onclick="copyHex(this)"></span>Médio</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6C86A2</span><button onclick="copyHexFromText('#6C86A2')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9AB4CE;" data-hex="#9AB4CE" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9AB4CE</span><button onclick="copyHexFromText('#9AB4CE')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">4. Ferro (Aço Fosco)</th></tr>
-                    <tr><td><span class="swatch" style="background:#3D4B56;"></span> Sombra</td><td class="hex">#3D4B56</td></tr>
-                    <tr><td><span class="swatch" style="background:#69717A;"></span> <strong>Base</strong></td><td class="hex">#69717A</td></tr>
-                    <tr><td><span class="swatch" style="background:#93A5B6;"></span> Transição</td><td class="hex">#93A5B6</td></tr>
-                    <tr><td><span class="swatch" style="background:#B3C4D3;"></span> Destaque</td><td class="hex">#B3C4D3</td></tr>
-                    <tr><td><span class="swatch" style="background:#D1DFE9;"></span> Brilho</td><td class="hex">#D1DFE9</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">4. Ferro (Aço Fosco)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#3D4B56;" data-hex="#3D4B56" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#3D4B56</span><button onclick="copyHexFromText('#3D4B56')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#69717A;" data-hex="#69717A" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#69717A</span><button onclick="copyHexFromText('#69717A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#93A5B6;" data-hex="#93A5B6" onclick="copyHex(this)"></span>Transição</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#93A5B6</span><button onclick="copyHexFromText('#93A5B6')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B3C4D3;" data-hex="#B3C4D3" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B3C4D3</span><button onclick="copyHexFromText('#B3C4D3')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D1DFE9;" data-hex="#D1DFE9" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D1DFE9</span><button onclick="copyHexFromText('#D1DFE9')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">5. Marrom-Couro (Madeira Antiga)</th></tr>
-                    <tr><td><span class="swatch" style="background:#8B755B;"></span> Sombra</td><td class="hex">#8B755B</td></tr>
-                    <tr><td><span class="swatch" style="background:#9C8C76;"></span> <strong>Base</strong></td><td class="hex">#9C8C76</td></tr>
-                    <tr><td><span class="swatch" style="background:#C2B49E;"></span> Destaque</td><td class="hex">#C2B49E</td></tr>
-                    <tr><td><span class="swatch" style="background:#D0BBA0;"></span> Areia</td><td class="hex">#D0BBA0</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">5. Marrom-Couro (Madeira Antiga)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#8B755B;" data-hex="#8B755B" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#8B755B</span><button onclick="copyHexFromText('#8B755B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9C8C76;" data-hex="#9C8C76" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9C8C76</span><button onclick="copyHexFromText('#9C8C76')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C2B49E;" data-hex="#C2B49E" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C2B49E</span><button onclick="copyHexFromText('#C2B49E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D0BBA0;" data-hex="#D0BBA0" onclick="copyHex(this)"></span>Areia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D0BBA0</span><button onclick="copyHexFromText('#D0BBA0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">6. Destaques (Jogabilidade)</th></tr>
-                    <tr><td><span class="swatch" style="background:#CC4C3D;"></span> Perigo</td><td class="hex">#CC4C3D</td></tr>
-                    <tr><td><span class="swatch" style="background:#3DB372;"></span> Cura</td><td class="hex">#3DB372</td></tr>
-                    <tr><td><span class="swatch" style="background:#39A3C0;"></span> Energia</td><td class="hex">#39A3C0</td></tr>
-                    <tr><td><span class="swatch" style="background:#F0C820;"></span> Interação</td><td class="hex">#F0C820</td></tr>
-                    <tr><td><span class="swatch" style="background:#9B60BB;"></span> Épico</td><td class="hex">#9B60BB</td></tr>
-                    <tr><td><span class="swatch" style="background:#EB8B47;"></span> Lendário</td><td class="hex">#EB8B47</td></tr>
-                    <tr><td><span class="swatch" style="background:#93D7CB;"></span> Anomalia</td><td class="hex">#93D7CB</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">6. Destaques (Jogabilidade)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#CC4C3D;" data-hex="#CC4C3D" onclick="copyHex(this)"></span>Perigo</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#CC4C3D</span><button onclick="copyHexFromText('#CC4C3D')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#3DB372;" data-hex="#3DB372" onclick="copyHex(this)"></span>Cura</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#3DB372</span><button onclick="copyHexFromText('#3DB372')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#39A3C0;" data-hex="#39A3C0" onclick="copyHex(this)"></span>Energia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#39A3C0</span><button onclick="copyHexFromText('#39A3C0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F0C820;" data-hex="#F0C820" onclick="copyHex(this)"></span>Interação</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F0C820</span><button onclick="copyHexFromText('#F0C820')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9B60BB;" data-hex="#9B60BB" onclick="copyHex(this)"></span>Épico</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9B60BB</span><button onclick="copyHexFromText('#9B60BB')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#EB8B47;" data-hex="#EB8B47" onclick="copyHex(this)"></span>Lendário</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#EB8B47</span><button onclick="copyHexFromText('#EB8B47')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#93D7CB;" data-hex="#93D7CB" onclick="copyHex(this)"></span>Anomalia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#93D7CB</span><button onclick="copyHexFromText('#93D7CB')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">7. Restrição (Uso Controlado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#833A4B;"></span> Rosa Ferrugem <span class="badge-restrict">⚠️ evitar Azul Base</span></td><td class="hex">#833A4B</td></tr>
-                    <tr><td><span class="swatch" style="background:#26D0FF;"></span> Ciano Gelo <span class="badge-restrict">⚠️ uso moderado</span></td><td class="hex">#26D0FF</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">7. Restrição (Uso Controlado)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#833A4B;" data-hex="#833A4B" onclick="copyHex(this)"></span>Rosa Ferrugem <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ evitar Azul Base</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#833A4B</span><button onclick="copyHexFromText('#833A4B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#26D0FF;" data-hex="#26D0FF" onclick="copyHex(this)"></span>Ciano Gelo <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ uso moderado</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#26D0FF</span><button onclick="copyHexFromText('#26D0FF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">8. Neutros</th></tr>
-                    <tr><td><span class="swatch" style="background:#0D1520;"></span> Preto Carvão</td><td class="hex">#0D1520</td></tr>
-                    <tr><td><span class="swatch" style="background:#FBF8F6;"></span> Branco Marfim</td><td class="hex">#FBF8F6</td></tr>
-                </table>
-
-                <div class="char-section">
-                    <div class="char-item"><div class="char-name">HERÓI</div><div class="char-swatch"><span style="background:#445E7C;"></span><span style="background:#F3EAC4;"></span><span style="background:#26D0FF;"></span></div></div>
-                    <div class="char-item"><div class="char-name">NPC</div><div class="char-swatch"><span style="background:#9C8C76;"></span><span style="background:#B3C4D3;"></span><span style="background:#F0C820;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO COMUM</div><div class="char-swatch"><span style="background:#3D4B56;"></span><span style="background:#925F46;"></span><span style="background:#CC4C3D;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO ELITE</div><div class="char-swatch"><span style="background:#833A4B;"></span><span style="background:#69717A;"></span><span style="background:#EB8B47;"></span></div></div>
-                    <div class="char-item"><div class="char-name">BOSS</div><div class="char-swatch"><span style="background:#0D1520;"></span><span style="background:#9B60BB;"></span><span style="background:#93D7CB;"></span></div></div>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">8. Neutros</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#0D1520;" data-hex="#0D1520" onclick="copyHex(this)"></span>Preto Carvão</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#0D1520</span><button onclick="copyHexFromText('#0D1520')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#FBF8F6;" data-hex="#FBF8F6" onclick="copyHex(this)"></span>Branco Marfim</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#FBF8F6</span><button onclick="copyHexFromText('#FBF8F6')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="rules">
-                    <strong>⭐ Como usar:</strong> Contraste equilibrado entre fundo e elementos. Pré-atenção eficiente nas cores de destaque. Conforto visual em sessões médias.
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4 pt-4 border-t border-[#21262d]">
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">HERÓI</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#445E7C;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F3EAC4;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#26D0FF;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">NPC</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#9C8C76;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#B3C4D3;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F0C820;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO COMUM</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#3D4B56;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#925F46;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#CC4C3D;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO ELITE</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#833A4B;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#69717A;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#EB8B47;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">BOSS</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#0D1520;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#9B60BB;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#93D7CB;"></span></div></div>
+                </div>
+
+                <div class="bg-github-bg rounded-lg p-3 mt-4 border-l-4 border-[#58a6ff] text-github-text-light text-sm">
+                    <strong class="text-github-text-bright">⭐ Como usar:</strong> Contraste equilibrado entre fundo e elementos. Pré-atenção eficiente nas cores de destaque. Conforto visual em sessões médias.
                 </div>
             </div>
 
-            <!-- ===== CARD 3: v3.6 – AURORA ===== -->
-            <div class="palette-card">
-                <div class="header">
-                    <h2>🌅 v3.6 – Aurora Steampunk</h2>
-                    <span class="tag aurora">Noite → Amanhecer</span>
-                </div>
-                <div class="desc">Transição Noite → Dia. Tons frios (azul noturno) com pontos quentes de aurora. Ideal para saída da masmorra e pós-boss.</div>
+            <!-- ============================================================ -->
+            <!-- CARD 3: v3.6 – AURORA -->
+            <!-- ============================================================ -->
+            <div class="palette-card bg-github-card border border-github-border rounded-2xl p-6 shadow-lg">
 
-                <div class="ui-example">
-                    <div class="hp">
+                <div class="flex flex-wrap items-baseline justify-between border-b border-github-border pb-3 mb-4">
+                    <h2 class="text-2xl font-bold text-github-text-bright">🌅 v3.6 – Aurora Steampunk</h2>
+                    <span class="text-xs font-semibold bg-[#1b2d3d] text-[#8ab8d9] px-3 py-1 rounded-full">Noite → Amanhecer</span>
+                </div>
+                <p class="text-github-text-light text-sm mb-4">Transição Noite → Dia. Tons frios (azul noturno) com pontos quentes de aurora. Ideal para saída da masmorra e pós-boss.</p>
+
+                <div class="bg-github-bg rounded-lg border border-[#21262d] p-3 mb-4 flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>❤️ HP</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:100%; background:#D94A38;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-full bg-[#D94A38] rounded"></div>
+                        </div>
                         <span>120/120</span>
                     </div>
-                    <div class="sta">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>⚡ STA</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:75%; background:#2A9BC4;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-[75%] bg-[#2A9BC4] rounded"></div>
+                        </div>
                         <span>75/100</span>
                     </div>
-                    <div class="minimap">
+                    <div class="flex items-center gap-2 font-mono text-xs">
                         <span>🗺️</span>
-                        <div class="map">
-                            <div class="room" style="background:#9B884A;"></div>
-                            <div class="room" style="background:#9B884A;"></div>
-                            <div class="room" style="background:#9B884A;"></div>
-                            <div class="room" style="background:#9B884A;"></div>
-                            <div class="player" style="background:#1EC8FF;"></div>
-                            <div class="enemy" style="background:#D94A38;"></div>
+                        <div class="w-12 h-12 border border-github-border rounded grid grid-cols-2 gap-1 p-1 bg-[#0e1a2b]">
+                            <div class="bg-[#9B884A] rounded"></div>
+                            <div class="bg-[#9B884A] rounded"></div>
+                            <div class="bg-[#9B884A] rounded"></div>
+                            <div class="bg-[#9B884A] rounded"></div>
+                            <div class="w-1.5 h-1.5 bg-[#1EC8FF] rounded-full justify-self-center self-center"></div>
+                            <div class="w-1.5 h-1.5 bg-[#D94A38] rounded-full justify-self-center self-center"></div>
                         </div>
                         <span>MINIMAP</span>
                     </div>
                 </div>
 
-                <table class="color-table">
-                    <tr><th colspan="2">1. Latão (Metal Aquecido)</th></tr>
-                    <tr><td><span class="swatch" style="background:#6B5A2E;"></span> Sombra</td><td class="hex">#6B5A2E</td></tr>
-                    <tr><td><span class="swatch" style="background:#9B884A;"></span> <strong>Base</strong></td><td class="hex">#9B884A</td></tr>
-                    <tr><td><span class="swatch" style="background:#C9B06E;"></span> Destaque</td><td class="hex">#C9B06E</td></tr>
-                    <tr><td><span class="swatch" style="background:#EADAA3;"></span> Brilho</td><td class="hex">#EADAA3</td></tr>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="text-github-text-light border-b border-[#21262d]"><th class="text-left font-semibold py-1 px-1.5" colspan="2">1. Latão (Metal Aquecido)</th></tr>
+                        </thead>
+                        <tbody class="text-github-text">
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6B5A2E;" data-hex="#6B5A2E" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6B5A2E</span><button onclick="copyHexFromText('#6B5A2E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9B884A;" data-hex="#9B884A" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9B884A</span><button onclick="copyHexFromText('#9B884A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C9B06E;" data-hex="#C9B06E" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C9B06E</span><button onclick="copyHexFromText('#C9B06E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#EADAA3;" data-hex="#EADAA3" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#EADAA3</span><button onclick="copyHexFromText('#EADAA3')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">2. Cobre (Cobre Noturno)</th></tr>
-                    <tr><td><span class="swatch" style="background:#6A3F2E;"></span> Sombra</td><td class="hex">#6A3F2E</td></tr>
-                    <tr><td><span class="swatch" style="background:#8A5C42;"></span> <strong>Base</strong></td><td class="hex">#8A5C42</td></tr>
-                    <tr><td><span class="swatch" style="background:#B58464;"></span> Destaque</td><td class="hex">#B58464</td></tr>
-                    <tr><td><span class="swatch" style="background:#D9B69E;"></span> Brilho</td><td class="hex">#D9B69E</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">2. Cobre (Cobre Noturno)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6A3F2E;" data-hex="#6A3F2E" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6A3F2E</span><button onclick="copyHexFromText('#6A3F2E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#8A5C42;" data-hex="#8A5C42" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#8A5C42</span><button onclick="copyHexFromText('#8A5C42')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B58464;" data-hex="#B58464" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B58464</span><button onclick="copyHexFromText('#B58464')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D9B69E;" data-hex="#D9B69E" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D9B69E</span><button onclick="copyHexFromText('#D9B69E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">3. Azul (Céu Noturno)</th></tr>
-                    <tr><td><span class="swatch" style="background:#141F2E;"></span> Sombra</td><td class="hex">#141F2E</td></tr>
-                    <tr><td><span class="swatch" style="background:#1E3347;"></span> <strong>Base</strong></td><td class="hex">#1E3347</td></tr>
-                    <tr><td><span class="swatch" style="background:#3A5775;"></span> Médio</td><td class="hex">#3A5775</td></tr>
-                    <tr><td><span class="swatch" style="background:#5F7FA0;"></span> Destaque</td><td class="hex">#5F7FA0</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">3. Azul (Céu Noturno)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#141F2E;" data-hex="#141F2E" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#141F2E</span><button onclick="copyHexFromText('#141F2E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#1E3347;" data-hex="#1E3347" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#1E3347</span><button onclick="copyHexFromText('#1E3347')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#3A5775;" data-hex="#3A5775" onclick="copyHex(this)"></span>Médio</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#3A5775</span><button onclick="copyHexFromText('#3A5775')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#5F7FA0;" data-hex="#5F7FA0" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#5F7FA0</span><button onclick="copyHexFromText('#5F7FA0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">4. Ferro (Aço Gelado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#2A333B;"></span> Sombra</td><td class="hex">#2A333B</td></tr>
-                    <tr><td><span class="swatch" style="background:#4B5660;"></span> <strong>Base</strong></td><td class="hex">#4B5660</td></tr>
-                    <tr><td><span class="swatch" style="background:#738391;"></span> Transição</td><td class="hex">#738391</td></tr>
-                    <tr><td><span class="swatch" style="background:#9AAABA;"></span> Destaque</td><td class="hex">#9AAABA</td></tr>
-                    <tr><td><span class="swatch" style="background:#C1CFDC;"></span> Brilho</td><td class="hex">#C1CFDC</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">4. Ferro (Aço Gelado)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#2A333B;" data-hex="#2A333B" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#2A333B</span><button onclick="copyHexFromText('#2A333B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4B5660;" data-hex="#4B5660" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4B5660</span><button onclick="copyHexFromText('#4B5660')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#738391;" data-hex="#738391" onclick="copyHex(this)"></span>Transição</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#738391</span><button onclick="copyHexFromText('#738391')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9AAABA;" data-hex="#9AAABA" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9AAABA</span><button onclick="copyHexFromText('#9AAABA')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C1CFDC;" data-hex="#C1CFDC" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C1CFDC</span><button onclick="copyHexFromText('#C1CFDC')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">5. Marrom-Couro (Madeira Noturna)</th></tr>
-                    <tr><td><span class="swatch" style="background:#4A3C2B;"></span> Sombra</td><td class="hex">#4A3C2B</td></tr>
-                    <tr><td><span class="swatch" style="background:#6B5D4C;"></span> <strong>Base</strong></td><td class="hex">#6B5D4C</td></tr>
-                    <tr><td><span class="swatch" style="background:#9A8A76;"></span> Destaque</td><td class="hex">#9A8A76</td></tr>
-                    <tr><td><span class="swatch" style="background:#B8A58C;"></span> Areia</td><td class="hex">#B8A58C</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">5. Marrom-Couro (Madeira Noturna)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4A3C2B;" data-hex="#4A3C2B" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4A3C2B</span><button onclick="copyHexFromText('#4A3C2B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6B5D4C;" data-hex="#6B5D4C" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6B5D4C</span><button onclick="copyHexFromText('#6B5D4C')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#9A8A76;" data-hex="#9A8A76" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#9A8A76</span><button onclick="copyHexFromText('#9A8A76')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B8A58C;" data-hex="#B8A58C" onclick="copyHex(this)"></span>Areia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B8A58C</span><button onclick="copyHexFromText('#B8A58C')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">6. Destaques (Jogabilidade)</th></tr>
-                    <tr><td><span class="swatch" style="background:#D94A38;"></span> Perigo</td><td class="hex">#D94A38</td></tr>
-                    <tr><td><span class="swatch" style="background:#43B881;"></span> Cura</td><td class="hex">#43B881</td></tr>
-                    <tr><td><span class="swatch" style="background:#2A9BC4;"></span> Energia</td><td class="hex">#2A9BC4</td></tr>
-                    <tr><td><span class="swatch" style="background:#F5C03A;"></span> Interação</td><td class="hex">#F5C03A</td></tr>
-                    <tr><td><span class="swatch" style="background:#A55CC9;"></span> Épico</td><td class="hex">#A55CC9</td></tr>
-                    <tr><td><span class="swatch" style="background:#F28B3A;"></span> Lendário</td><td class="hex">#F28B3A</td></tr>
-                    <tr><td><span class="swatch" style="background:#7ED4C7;"></span> Anomalia</td><td class="hex">#7ED4C7</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">6. Destaques (Jogabilidade)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D94A38;" data-hex="#D94A38" onclick="copyHex(this)"></span>Perigo</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D94A38</span><button onclick="copyHexFromText('#D94A38')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#43B881;" data-hex="#43B881" onclick="copyHex(this)"></span>Cura</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#43B881</span><button onclick="copyHexFromText('#43B881')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#2A9BC4;" data-hex="#2A9BC4" onclick="copyHex(this)"></span>Energia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#2A9BC4</span><button onclick="copyHexFromText('#2A9BC4')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F5C03A;" data-hex="#F5C03A" onclick="copyHex(this)"></span>Interação</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F5C03A</span><button onclick="copyHexFromText('#F5C03A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A55CC9;" data-hex="#A55CC9" onclick="copyHex(this)"></span>Épico</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A55CC9</span><button onclick="copyHexFromText('#A55CC9')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F28B3A;" data-hex="#F28B3A" onclick="copyHex(this)"></span>Lendário</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F28B3A</span><button onclick="copyHexFromText('#F28B3A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#7ED4C7;" data-hex="#7ED4C7" onclick="copyHex(this)"></span>Anomalia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#7ED4C7</span><button onclick="copyHexFromText('#7ED4C7')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">7. Restrição (Uso Controlado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#7A2E42;"></span> Rosa Néon Noturno <span class="badge-restrict">⚠️ evitar Azul Base</span></td><td class="hex">#7A2E42</td></tr>
-                    <tr><td><span class="swatch" style="background:#1EC8FF;"></span> Ciano Estrela <span class="badge-restrict">⚠️ uso moderado</span></td><td class="hex">#1EC8FF</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">7. Restrição (Uso Controlado)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#7A2E42;" data-hex="#7A2E42" onclick="copyHex(this)"></span>Rosa Néon Noturno <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ evitar Azul Base</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#7A2E42</span><button onclick="copyHexFromText('#7A2E42')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#1EC8FF;" data-hex="#1EC8FF" onclick="copyHex(this)"></span>Ciano Estrela <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ uso moderado</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#1EC8FF</span><button onclick="copyHexFromText('#1EC8FF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">8. Neutros</th></tr>
-                    <tr><td><span class="swatch" style="background:#0A0E14;"></span> Preto Noite</td><td class="hex">#0A0E14</td></tr>
-                    <tr><td><span class="swatch" style="background:#F0F4FA;"></span> Branco Lua</td><td class="hex">#F0F4FA</td></tr>
-                </table>
-
-                <div class="char-section">
-                    <div class="char-item"><div class="char-name">HERÓI</div><div class="char-swatch"><span style="background:#1E3347;"></span><span style="background:#EADAA3;"></span><span style="background:#1EC8FF;"></span></div></div>
-                    <div class="char-item"><div class="char-name">NPC</div><div class="char-swatch"><span style="background:#6B5D4C;"></span><span style="background:#9AAABA;"></span><span style="background:#F5C03A;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO COMUM</div><div class="char-swatch"><span style="background:#2A333B;"></span><span style="background:#6A3F2E;"></span><span style="background:#D94A38;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO ELITE</div><div class="char-swatch"><span style="background:#7A2E42;"></span><span style="background:#4B5660;"></span><span style="background:#F28B3A;"></span></div></div>
-                    <div class="char-item"><div class="char-name">BOSS</div><div class="char-swatch"><span style="background:#0A0E14;"></span><span style="background:#A55CC9;"></span><span style="background:#7ED4C7;"></span></div></div>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">8. Neutros</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#0A0E14;" data-hex="#0A0E14" onclick="copyHex(this)"></span>Preto Noite</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#0A0E14</span><button onclick="copyHexFromText('#0A0E14')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F0F4FA;" data-hex="#F0F4FA" onclick="copyHex(this)"></span>Branco Lua</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F0F4FA</span><button onclick="copyHexFromText('#F0F4FA')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="rules">
-                    <strong>⭐ Como usar:</strong> Contraste equilibrado entre fundo e elementos. Pré-atenção eficiente nas cores de destaque. Conforto visual em longas sessões. Ideal para transições: saída da masmorra ao amanhecer.
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4 pt-4 border-t border-[#21262d]">
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">HERÓI</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#1E3347;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#EADAA3;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#1EC8FF;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">NPC</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#6B5D4C;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#9AAABA;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F5C03A;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO COMUM</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#2A333B;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#6A3F2E;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#D94A38;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO ELITE</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#7A2E42;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#4B5660;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F28B3A;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">BOSS</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#0A0E14;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#A55CC9;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#7ED4C7;"></span></div></div>
+                </div>
+
+                <div class="bg-github-bg rounded-lg p-3 mt-4 border-l-4 border-[#58a6ff] text-github-text-light text-sm">
+                    <strong class="text-github-text-bright">⭐ Como usar:</strong> Contraste equilibrado entre fundo e elementos. Pré-atenção eficiente nas cores de destaque. Conforto visual em longas sessões. Ideal para transições: saída da masmorra ao amanhecer.
                 </div>
             </div>
 
-            <!-- ===== CARD 4: v4.1 – CLARO (AIRSHIP) ===== -->
-            <div class="palette-card">
-                <div class="header">
-                    <h2>☀️ v4.1 – Airship Steampunk</h2>
-                    <span class="tag light">Claro · Contraste Ajustado</span>
-                </div>
-                <div class="desc">Versão diurna. Clara, quente, com maior definição e contraste equilibrado. Ideal para cidades, hubs e exteriores.</div>
+            <!-- ============================================================ -->
+            <!-- CARD 4: v4.1 – CLARO (AIRSHIP) -->
+            <!-- ============================================================ -->
+            <div class="palette-card bg-github-card border border-github-border rounded-2xl p-6 shadow-lg">
 
-                <div class="ui-example">
-                    <div class="hp">
+                <div class="flex flex-wrap items-baseline justify-between border-b border-github-border pb-3 mb-4">
+                    <h2 class="text-2xl font-bold text-github-text-bright">☀️ v4.1 – Airship Steampunk</h2>
+                    <span class="text-xs font-semibold bg-[#2d2a1b] text-[#e8d5a3] px-3 py-1 rounded-full">Claro · Contraste Ajustado</span>
+                </div>
+                <p class="text-github-text-light text-sm mb-4">Versão diurna. Clara, quente, com maior definição e contraste equilibrado. Ideal para cidades, hubs e exteriores.</p>
+
+                <div class="bg-github-bg rounded-lg border border-[#21262d] p-3 mb-4 flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>❤️ HP</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:100%; background:#D95A4A;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-full bg-[#D95A4A] rounded"></div>
+                        </div>
                         <span>120/120</span>
                     </div>
-                    <div class="sta">
+                    <div class="flex items-center gap-2 font-mono text-sm">
                         <span>⚡ STA</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width:75%; background:#4894C9;"></div></div>
+                        <div class="w-24 h-3 bg-[#0e1a2b] rounded overflow-hidden">
+                            <div class="h-full w-[75%] bg-[#4894C9] rounded"></div>
+                        </div>
                         <span>75/100</span>
                     </div>
-                    <div class="minimap">
+                    <div class="flex items-center gap-2 font-mono text-xs">
                         <span>🗺️</span>
-                        <div class="map">
-                            <div class="room" style="background:#DBC28A;"></div>
-                            <div class="room" style="background:#DBC28A;"></div>
-                            <div class="room" style="background:#DBC28A;"></div>
-                            <div class="room" style="background:#DBC28A;"></div>
-                            <div class="player" style="background:#4DCBFF;"></div>
-                            <div class="enemy" style="background:#D95A4A;"></div>
+                        <div class="w-12 h-12 border border-github-border rounded grid grid-cols-2 gap-1 p-1 bg-[#0e1a2b]">
+                            <div class="bg-[#DBC28A] rounded"></div>
+                            <div class="bg-[#DBC28A] rounded"></div>
+                            <div class="bg-[#DBC28A] rounded"></div>
+                            <div class="bg-[#DBC28A] rounded"></div>
+                            <div class="w-1.5 h-1.5 bg-[#4DCBFF] rounded-full justify-self-center self-center"></div>
+                            <div class="w-1.5 h-1.5 bg-[#D95A4A] rounded-full justify-self-center self-center"></div>
                         </div>
                         <span>MINIMAP</span>
                     </div>
                 </div>
 
-                <table class="color-table">
-                    <tr><th colspan="2">1. Latão (Polido e Iluminado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#B5955E;"></span> Sombra</td><td class="hex">#B5955E</td></tr>
-                    <tr><td><span class="swatch" style="background:#DBC28A;"></span> <strong>Base</strong></td><td class="hex">#DBC28A</td></tr>
-                    <tr><td><span class="swatch" style="background:#EDDCB0;"></span> Destaque</td><td class="hex">#EDDCB0</td></tr>
-                    <tr><td><span class="swatch" style="background:#F9F1DF;"></span> Brilho</td><td class="hex">#F9F1DF</td></tr>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="text-github-text-light border-b border-[#21262d]"><th class="text-left font-semibold py-1 px-1.5" colspan="2">1. Latão (Polido e Iluminado)</th></tr>
+                        </thead>
+                        <tbody class="text-github-text">
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B5955E;" data-hex="#B5955E" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B5955E</span><button onclick="copyHexFromText('#B5955E')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#DBC28A;" data-hex="#DBC28A" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#DBC28A</span><button onclick="copyHexFromText('#DBC28A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#EDDCB0;" data-hex="#EDDCB0" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#EDDCB0</span><button onclick="copyHexFromText('#EDDCB0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F9F1DF;" data-hex="#F9F1DF" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F9F1DF</span><button onclick="copyHexFromText('#F9F1DF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">2. Cobre (Aveludado e Rosado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#A87662;"></span> Sombra</td><td class="hex">#A87662</td></tr>
-                    <tr><td><span class="swatch" style="background:#C99B84;"></span> <strong>Base</strong></td><td class="hex">#C99B84</td></tr>
-                    <tr><td><span class="swatch" style="background:#DFBEAC;"></span> Destaque</td><td class="hex">#DFBEAC</td></tr>
-                    <tr><td><span class="swatch" style="background:#F0DED4;"></span> Brilho</td><td class="hex">#F0DED4</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">2. Cobre (Aveludado e Rosado)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A87662;" data-hex="#A87662" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A87662</span><button onclick="copyHexFromText('#A87662')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C99B84;" data-hex="#C99B84" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C99B84</span><button onclick="copyHexFromText('#C99B84')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#DFBEAC;" data-hex="#DFBEAC" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#DFBEAC</span><button onclick="copyHexFromText('#DFBEAC')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F0DED4;" data-hex="#F0DED4" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F0DED4</span><button onclick="copyHexFromText('#F0DED4')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">3. Azul (Céu e Água)</th></tr>
-                    <tr><td><span class="swatch" style="background:#4B6D8A;"></span> Sombra</td><td class="hex">#4B6D8A</td></tr>
-                    <tr><td><span class="swatch" style="background:#6E8FAD;"></span> <strong>Base</strong></td><td class="hex">#6E8FAD</td></tr>
-                    <tr><td><span class="swatch" style="background:#98B5CF;"></span> Médio</td><td class="hex">#98B5CF</td></tr>
-                    <tr><td><span class="swatch" style="background:#C2D7EA;"></span> Destaque</td><td class="hex">#C2D7EA</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">3. Azul (Céu e Água)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4B6D8A;" data-hex="#4B6D8A" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4B6D8A</span><button onclick="copyHexFromText('#4B6D8A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#6E8FAD;" data-hex="#6E8FAD" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#6E8FAD</span><button onclick="copyHexFromText('#6E8FAD')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#98B5CF;" data-hex="#98B5CF" onclick="copyHex(this)"></span>Médio</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#98B5CF</span><button onclick="copyHexFromText('#98B5CF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C2D7EA;" data-hex="#C2D7EA" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C2D7EA</span><button onclick="copyHexFromText('#C2D7EA')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">4. Ferro (Aço Polido)</th></tr>
-                    <tr><td><span class="swatch" style="background:#5A6A76;"></span> Sombra</td><td class="hex">#5A6A76</td></tr>
-                    <tr><td><span class="swatch" style="background:#8294A3;"></span> <strong>Base</strong></td><td class="hex">#8294A3</td></tr>
-                    <tr><td><span class="swatch" style="background:#A5B5C2;"></span> Transição</td><td class="hex">#A5B5C2</td></tr>
-                    <tr><td><span class="swatch" style="background:#C2D1DC;"></span> Destaque</td><td class="hex">#C2D1DC</td></tr>
-                    <tr><td><span class="swatch" style="background:#DDE8EF;"></span> Brilho</td><td class="hex">#DDE8EF</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">4. Ferro (Aço Polido)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#5A6A76;" data-hex="#5A6A76" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#5A6A76</span><button onclick="copyHexFromText('#5A6A76')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#8294A3;" data-hex="#8294A3" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#8294A3</span><button onclick="copyHexFromText('#8294A3')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A5B5C2;" data-hex="#A5B5C2" onclick="copyHex(this)"></span>Transição</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A5B5C2</span><button onclick="copyHexFromText('#A5B5C2')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#C2D1DC;" data-hex="#C2D1DC" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#C2D1DC</span><button onclick="copyHexFromText('#C2D1DC')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#DDE8EF;" data-hex="#DDE8EF" onclick="copyHex(this)"></span>Brilho</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#DDE8EF</span><button onclick="copyHexFromText('#DDE8EF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">5. Marrom-Couro (Madeira Clara)</th></tr>
-                    <tr><td><span class="swatch" style="background:#8F7C64;"></span> Sombra</td><td class="hex">#8F7C64</td></tr>
-                    <tr><td><span class="swatch" style="background:#B8A488;"></span> <strong>Base</strong></td><td class="hex">#B8A488</td></tr>
-                    <tr><td><span class="swatch" style="background:#D2C2AA;"></span> Destaque</td><td class="hex">#D2C2AA</td></tr>
-                    <tr><td><span class="swatch" style="background:#DFD2BC;"></span> Areia</td><td class="hex">#DFD2BC</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">5. Marrom-Couro (Madeira Clara)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#8F7C64;" data-hex="#8F7C64" onclick="copyHex(this)"></span>Sombra</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#8F7C64</span><button onclick="copyHexFromText('#8F7C64')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#B8A488;" data-hex="#B8A488" onclick="copyHex(this)"></span><strong>Base</strong></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#B8A488</span><button onclick="copyHexFromText('#B8A488')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D2C2AA;" data-hex="#D2C2AA" onclick="copyHex(this)"></span>Destaque</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D2C2AA</span><button onclick="copyHexFromText('#D2C2AA')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#DFD2BC;" data-hex="#DFD2BC" onclick="copyHex(this)"></span>Areia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#DFD2BC</span><button onclick="copyHexFromText('#DFD2BC')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">6. Destaques (Jogabilidade)</th></tr>
-                    <tr><td><span class="swatch" style="background:#D95A4A;"></span> Perigo</td><td class="hex">#D95A4A</td></tr>
-                    <tr><td><span class="swatch" style="background:#52B884;"></span> Cura</td><td class="hex">#52B884</td></tr>
-                    <tr><td><span class="swatch" style="background:#4894C9;"></span> Energia</td><td class="hex">#4894C9</td></tr>
-                    <tr><td><span class="swatch" style="background:#F0C43B;"></span> Interação</td><td class="hex">#F0C43B</td></tr>
-                    <tr><td><span class="swatch" style="background:#A97BC9;"></span> Épico</td><td class="hex">#A97BC9</td></tr>
-                    <tr><td><span class="swatch" style="background:#F0986C;"></span> Lendário</td><td class="hex">#F0986C</td></tr>
-                    <tr><td><span class="swatch" style="background:#84C9C0;"></span> Anomalia</td><td class="hex">#84C9C0</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">6. Destaques (Jogabilidade)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#D95A4A;" data-hex="#D95A4A" onclick="copyHex(this)"></span>Perigo</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#D95A4A</span><button onclick="copyHexFromText('#D95A4A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#52B884;" data-hex="#52B884" onclick="copyHex(this)"></span>Cura</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#52B884</span><button onclick="copyHexFromText('#52B884')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4894C9;" data-hex="#4894C9" onclick="copyHex(this)"></span>Energia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4894C9</span><button onclick="copyHexFromText('#4894C9')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F0C43B;" data-hex="#F0C43B" onclick="copyHex(this)"></span>Interação</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F0C43B</span><button onclick="copyHexFromText('#F0C43B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A97BC9;" data-hex="#A97BC9" onclick="copyHex(this)"></span>Épico</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A97BC9</span><button onclick="copyHexFromText('#A97BC9')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#F0986C;" data-hex="#F0986C" onclick="copyHex(this)"></span>Lendário</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#F0986C</span><button onclick="copyHexFromText('#F0986C')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#84C9C0;" data-hex="#84C9C0" onclick="copyHex(this)"></span>Anomalia</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#84C9C0</span><button onclick="copyHexFromText('#84C9C0')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">7. Restrição (Uso Controlado)</th></tr>
-                    <tr><td><span class="swatch" style="background:#A8596B;"></span> Rosa Envelhecido <span class="badge-restrict">⚠️ evitar fundos muito claros</span></td><td class="hex">#A8596B</td></tr>
-                    <tr><td><span class="swatch" style="background:#4DCBFF;"></span> Ciano Gelado <span class="badge-restrict">⚠️ uso moderado</span></td><td class="hex">#4DCBFF</td></tr>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">7. Restrição (Uso Controlado)</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#A8596B;" data-hex="#A8596B" onclick="copyHex(this)"></span>Rosa Envelhecido <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ evitar fundos muito claros</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#A8596B</span><button onclick="copyHexFromText('#A8596B')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#4DCBFF;" data-hex="#4DCBFF" onclick="copyHex(this)"></span>Ciano Gelado <span class="bg-[#2d1b1b] text-[#f08888] text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ml-1">⚠️ uso moderado</span></td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#4DCBFF</span><button onclick="copyHexFromText('#4DCBFF')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
 
-                    <tr><th colspan="2">8. Neutros</th></tr>
-                    <tr><td><span class="swatch" style="background:#1A2A3A;"></span> Preto Suave</td><td class="hex">#1A2A3A</td></tr>
-                    <tr><td><span class="swatch" style="background:#FDFAF3;"></span> Branco Quente</td><td class="hex">#FDFAF3</td></tr>
-                </table>
-
-                <div class="char-section">
-                    <div class="char-item"><div class="char-name">HERÓI</div><div class="char-swatch"><span style="background:#6E8FAD;"></span><span style="background:#F9F1DF;"></span><span style="background:#4DCBFF;"></span></div></div>
-                    <div class="char-item"><div class="char-name">NPC</div><div class="char-swatch"><span style="background:#B8A488;"></span><span style="background:#C2D1DC;"></span><span style="background:#F0C43B;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO COMUM</div><div class="char-swatch"><span style="background:#5A6A76;"></span><span style="background:#A87662;"></span><span style="background:#D95A4A;"></span></div></div>
-                    <div class="char-item"><div class="char-name">INIMIGO ELITE</div><div class="char-swatch"><span style="background:#A8596B;"></span><span style="background:#8294A3;"></span><span style="background:#F0986C;"></span></div></div>
-                    <div class="char-item"><div class="char-name">BOSS</div><div class="char-swatch"><span style="background:#1A2A3A;"></span><span style="background:#A97BC9;"></span><span style="background:#84C9C0;"></span></div></div>
+                            <tr><th class="text-left font-semibold py-1 px-1.5 text-github-text-light border-b border-[#21262d]" colspan="2">8. Neutros</th></tr>
+                            <tr class="border-b border-[#1c2128] group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#1A2A3A;" data-hex="#1A2A3A" onclick="copyHex(this)"></span>Preto Suave</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#1A2A3A</span><button onclick="copyHexFromText('#1A2A3A')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                            <tr class="group"><td class="py-1.5 px-1.5 flex items-center gap-2"><span class="swatch-hover inline-block w-6 h-6 rounded border border-github-border" style="background:#FDFAF3;" data-hex="#FDFAF3" onclick="copyHex(this)"></span>Branco Quente</td><td class="font-mono text-github-text-light text-xs flex items-center justify-end gap-2"><span>#FDFAF3</span><button onclick="copyHexFromText('#FDFAF3')" class="badge-copy text-github-text-light hover:text-github-text-bright transition" title="Copiar HEX">📋</button></td></tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="rules">
-                    <strong>⭐ Como usar:</strong> Contraste = Legibilidade. Bordas claras no herói. Cores de destaque com saturação média-alta para pré-atenção. Ideal para áreas externas e hubs.
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4 pt-4 border-t border-[#21262d]">
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">HERÓI</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#6E8FAD;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F9F1DF;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#4DCBFF;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">NPC</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#B8A488;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#C2D1DC;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F0C43B;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO COMUM</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#5A6A76;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#A87662;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#D95A4A;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">INIMIGO ELITE</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#A8596B;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#8294A3;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#F0986C;"></span></div></div>
+                    <div class="text-center bg-github-bg rounded-lg border border-[#21262d] p-2"><div class="text-[0.7rem] font-semibold text-github-text-light mb-1">BOSS</div><div class="flex justify-center gap-1 flex-wrap"><span class="w-5 h-5 rounded border border-github-border" style="background:#1A2A3A;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#A97BC9;"></span><span class="w-5 h-5 rounded border border-github-border" style="background:#84C9C0;"></span></div></div>
+                </div>
+
+                <div class="bg-github-bg rounded-lg p-3 mt-4 border-l-4 border-[#58a6ff] text-github-text-light text-sm">
+                    <strong class="text-github-text-bright">⭐ Como usar:</strong> Contraste = Legibilidade. Bordas claras no herói. Cores de destaque com saturação média-alta para pré-atenção. Ideal para áreas externas e hubs.
                 </div>
             </div>
 
-        </div><!-- end palette-grid -->
+        </div><!-- end grid -->
 
-        <!-- ============================== FOOTER ============================== -->
-        <div class="footer">
+        <!-- ===== FOOTER ===== -->
+        <div class="mt-10 pt-5 border-t border-github-border text-center text-github-text-light text-sm">
             <p><strong>Paletas Steampunk – Referência Visual</strong> &nbsp;•&nbsp; v3.0 · v3.5 · v3.6 · v4.1</p>
-            <p style="color:#6e7681; font-size:0.75rem;">Pixel Art 64x64 • Cores baseadas em neurociência visual • Contraste validado WCAG</p>
-            <p style="color:#6e7681; font-size:0.7rem; margin-top:6px;">🖱️ Passe o mouse sobre os cards para ver detalhes • As cores são exatas das paletas</p>
+            <p class="text-[#6e7681] text-xs mt-1">Pixel Art 64x64 • Cores baseadas em neurociência visual • Contraste validado WCAG</p>
+            <p class="text-[#6e7681] text-[0.7rem] mt-1">🖱️ Clique em qualquer cor para copiar o HEX • Passe o mouse sobre os cards para ver detalhes</p>
         </div>
 
     </div><!-- end container -->
 
-    <!-- Script para garantir que o Mermaid não quebre a página (não temos diagramas, mas mantido para compatibilidade) -->
+    <!-- ===== JAVASCRIPT PARA CÓPIA ===== -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Se houver algum elemento Mermaid no futuro, inicializa
-            if (typeof mermaid !== 'undefined') {
-                mermaid.initialize({
-                    theme: 'dark',
-                    themeVariables: {
-                        background: '#0d1117',
-                        primaryColor: '#58a6ff',
-                        primaryTextColor: '#f0f6fc',
-                        primaryBorderColor: '#30363d',
-                        lineColor: '#8b949e',
-                        fontFamily: 'Segoe UI, sans-serif',
-                    },
-                    flowchart: { useMaxWidth: true, htmlLabels: true }
-                });
+        // Função chamada ao clicar no quadrado de cor
+        function copyHex(element) {
+            const hex = element.getAttribute('data-hex');
+            if (hex) {
+                copyToClipboard(hex);
             }
-        });
+        }
+
+        // Função chamada ao clicar no botão ao lado do HEX
+        function copyHexFromText(hex) {
+            copyToClipboard(hex);
+        }
+
+        // Função principal de cópia
+        function copyToClipboard(text) {
+            // Tenta usar a API Clipboard (moderna)
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(text);
+                }).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        // Fallback para navegadores antigos
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(text);
+            } catch (err) {
+                alert('Não foi possível copiar: ' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Exibe o toast de confirmação
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            const message = document.getElementById('toastMessage');
+            message.textContent = text + ' copiado!';
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+
+            // Remove a classe de animação anterior para reiniciar
+            toast.classList.remove('copy-toast');
+            // Força reflow
+            void toast.offsetWidth;
+            toast.classList.add('copy-toast');
+
+            // Esconde após 1.5s
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 1500);
+        }
     </script>
 
 </body>
