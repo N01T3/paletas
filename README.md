@@ -1,7 +1,4 @@
 
----
-
-```markdown
 # 🎨 Paletas Steampunk – Referência Visual para Roguelike em Pixel Art
 
 > Sistema de paletas de cores para um jogo **Roguelike Steampunk de Viagem no Tempo** com arte em **Pixel Art 64x64**.  
